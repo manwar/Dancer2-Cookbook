@@ -1,12 +1,16 @@
+<% IF error %>
+   <p><b><font color="red">ERROR:<% error %></font></b></p>
+<% END %>
 <p><h3>Add Book</h3><hr/>
    <form method="POST" action="/add/book">
          Author:
          <select name="author">
          <% FOREACH author IN authors %>
-            <option value="<% author.id %>"><% author.name %></option>
+            <option value="<% author.id %>" <% IF author.id == selected %> SELECTED <% END %>>
+            <% author.name %></option>
          <% END %>
          </select>
-         Title: <input type="text" name="title" />
+         Title: <input type="text" name="title" value="<% title %>"/>
          <input type="submit"/>
    </form>
 </p>

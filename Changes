@@ -1,4 +1,10 @@
 Revision history for Dancer2-Cookbook
 
+0.02  Fri Mar 06 20:50:00 2015
+      - Added unique constraint to the tables 'author' and 'book'.
+      - Updated add author/book page to handle database error.
+      - Added edit link to author/book on the list page.
+      - Added edit author/book page.
+
 0.01  Fri Mar 06 18:00:00 2015
       - First draft released.

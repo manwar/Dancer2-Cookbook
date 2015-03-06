@@ -1,10 +1,10 @@
 <% IF results.size %>
    <% FOREACH result IN results %>
-      <li>Author:<b> <% result.author %> </b>
+      <li>Author:<b> <% result.author.name %> </b> &nbsp; <a href="/edit/author/<% result.author.id %>">Edit</a>
           <% IF result.books.size %>
              <ul>
                 <% FOREACH book IN result.books %>
-                <li><b><% book %></b></li>
+                <li><b><% book.name %></b> &nbsp; <a href="/edit/book/<% book.id %>">Edit</a></li>
                 <% END %>
              </ul>
           <% ELSE %>

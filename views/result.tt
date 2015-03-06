@@ -4,10 +4,13 @@
        Results:
         <ul>
         <% FOREACH result IN results %>
-          <li>Author: <% result.author.replace("((?i)$query)", '<b>$1</b>') %>
+          <li>Author: <% result.author.name.replace("((?i)$query)", '<b>$1</b>') %>
+          &nbsp; <a href="/edit/author/<% result.author.id %>">Edit</a>
           <ul>
           <% FOREACH book IN result.books %>
-            <li><% book.replace("((?i)$query)", '<b>$1</b>') %>
+            <li><% book.name.replace("((?i)$query)", '<b>$1</b>') %>
+             &nbsp; <a href="/edit/book/<% book.id %>">Edit</a>
+            </li>
           <% END %>
           </ul>
         <% END %>

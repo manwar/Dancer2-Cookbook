@@ -18,6 +18,6 @@ RUN:
 FEATURE:
 
     - List authors and their books.
-    - Add/Delete Author.
-    - Add/Delete Book.
+    - Add/Edit/Delete Author.
+    - Add/Edit/Delete Book.
     - Search Author/Book.

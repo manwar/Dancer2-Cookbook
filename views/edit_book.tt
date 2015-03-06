@@ -1,0 +1,10 @@
+<% IF error %>
+   <p><b><font color="red">ERROR:<% error %></font></b></p>
+<% END %>
+<p><h3>Edit Book</h3><hr/>
+   <form method="POST" action="/edit/book/<% id %>">
+         Author: <b><% author %></b>
+         Title: <input type="text" name="title" value="<% title %>"/>
+         <input type="submit"/>
+   </form>
+</p>
