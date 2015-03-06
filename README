@@ -14,3 +14,10 @@ INSTALL:
 RUN:
 
     - sudo plackup bin/app.psgi
+
+FEATURE:
+
+    - List authors and their books.
+    - Add/Delete Author.
+    - Add/Delete Book.
+    - Search Author/Book.
