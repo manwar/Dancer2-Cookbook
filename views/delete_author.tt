@@ -1,0 +1,11 @@
+<p><h3>Delete Author</h3><hr/></p>
+<% IF authors.size %>
+   <form method="POST" action="/delete/author">
+   <% FOREACH author IN authors %>
+      <input type="checkbox" name="author" value="<% author.id %>"><b><% author.name %></b><br>
+   <% END %>
+   <input type="submit"/>
+   </form>
+<% ELSE %>
+   <b>No author can be deleted.</b>
+<% END %>

@@ -1,0 +1,11 @@
+<% IF books.size %>
+   <p><h3>Delete Book</h3><hr/>
+   <form method="POST" action="/delete/book">
+   <% FOREACH book IN books %>
+      <input type="checkbox" name="book" value="<% book.id %>"><% book.title %>[<% book.author %>]<br>
+   <% END %>
+   <input type="submit"/>
+   </form>
+<% ELSE %>
+   <b>None book found.</b>
+<% END %>

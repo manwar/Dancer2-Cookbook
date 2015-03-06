@@ -1,0 +1,16 @@
+Dancer2 Cookbook
+----------------
+
+Example 1: Bookstore
+
+INSTALL:
+
+    - sudo cpanm Dancer2::Plugin::DBIC
+
+    - sqlite3 bookstore.db < bookstore.sql
+
+    - SCHEMA_LOADER_BACKCOMPAT=1 perl populate_database.pl
+
+RUN:
+
+    - sudo plackup bin/app.psgi

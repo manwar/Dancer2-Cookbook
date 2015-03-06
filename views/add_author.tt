@@ -1,0 +1,7 @@
+<p><h3>Add Author</h3><hr/>
+   <form method="POST" action="/add/author">
+         First Name:<input type="text" name="firstname"/>
+         Last Name :<input type="text" name="lastname"/>
+         <input type="submit"/>
+   </form>
+</p>

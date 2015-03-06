@@ -1,0 +1,17 @@
+<% IF results.size %>
+   <% FOREACH result IN results %>
+      <li>Author:<b> <% result.author %> </b>
+          <% IF result.books.size %>
+             <ul>
+                <% FOREACH book IN result.books %>
+                <li><b><% book %></b></li>
+                <% END %>
+             </ul>
+          <% ELSE %>
+             <ul><li><b>None</b></li></ul>
+          <% END %>
+      </li>
+   <% END %>
+<% ELSE %>
+   Oops, the bookstore is empty !!!
+<% END %>

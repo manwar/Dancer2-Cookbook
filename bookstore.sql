@@ -1,0 +1,11 @@
+CREATE TABLE author(
+    id        INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    firstname TEXT    DEFAULT '' NOT NULL,
+    lastname  TEXT    NOT NULL
+);
+
+CREATE TABLE book(
+    id     INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    author INTEGER REFERENCES author(id),
+    title  TEXT    DEFAULT '' NOT NULL
+);

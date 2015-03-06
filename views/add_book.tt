@@ -1,0 +1,12 @@
+<p><h3>Add Book</h3><hr/>
+   <form method="POST" action="/add/book">
+         Author:
+         <select name="author">
+         <% FOREACH author IN authors %>
+            <option value="<% author.id %>"><% author.name %></option>
+         <% END %>
+         </select>
+         Title: <input type="text" name="title" />
+         <input type="submit"/>
+   </form>
+</p>

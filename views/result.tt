@@ -1,0 +1,17 @@
+<% IF query.length %>
+     <p>Search query was : <% query %>.</p>
+     <% IF results.size %>
+       Results:
+        <ul>
+        <% FOREACH result IN results %>
+          <li>Author: <% result.author.replace("((?i)$query)", '<b>$1</b>') %>
+          <ul>
+          <% FOREACH book IN result.books %>
+            <li><% book.replace("((?i)$query)", '<b>$1</b>') %>
+          <% END %>
+          </ul>
+        <% END %>
+      <% ELSE %>
+        No result
+      <% END %>
+<% END %>

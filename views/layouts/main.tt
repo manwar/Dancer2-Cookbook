@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-type" content="text/html; charset=<% settings.charset %>" />
+<title>bookstore</title>
+<link rel="stylesheet" href="<% request.uri_base %>/css/style.css" />
+
+<!-- Grab jQuery from a CDN, fall back to local if necessary -->
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<script type="text/javascript">/* <![CDATA[ */
+    !window.jQuery && document.write('<script type="text/javascript" src="<% request.uri_base %>/javascripts/jquery.js"><\/script>')
+/* ]]> */</script>
+
+</head>
+<body>
+<div align="center">
+<h1>Dancer2 Cookbook - BookStore</h1>
+<br/><hr/>
+|
+<a href="/list">List</a>
+|
+<a href="/search">Search</a>
+|
+<a href="/add/author">Add Author</a>
+|
+<a href="/delete/author">Delete Author</a>
+|
+<a href="/add/book">Add Book</a>
+|
+<a href="/delete/book">Delete Book</a>
+|
+<hr/>
+</div>
+<% content %>
+<div id="footer">
+<hr/>
+Powered by <a href="http://perldancer.org/">Dancer2</a> <% dancer_version %>
+<hr/>
+</div>
+</body>
+</html>

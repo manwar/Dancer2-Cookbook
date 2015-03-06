@@ -1,0 +1,6 @@
+<p><h3>Search (Author/Book)</h3><hr/>
+   <form method="POST" action="/search">
+         <input type="text" name="query" />
+         <input type="submit"/>
+   </form>
+</p>
