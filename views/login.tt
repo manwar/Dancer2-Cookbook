@@ -1,0 +1,13 @@
+<div align="center">
+<% IF error %>
+   <p><b><font color="red">ERROR:<% error %></font></b></p>
+<% END %>
+<p><h3>Login</h3><hr/>
+   <form method="POST" action="/login">
+         <input type="hidden" name="return_url" value="<% return_url %>"/>
+         User Name:<input type="text" name="username" value="<% username %>"/>
+         Password :<input type="password" name="password" value="<% password %>"/>
+         <input type="submit"/>
+   </form>
+</p>
+</div>

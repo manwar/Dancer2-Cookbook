@@ -9,6 +9,8 @@ layout: "main"
 # about unicode within your app when this setting is set (recommended).
 charset: "UTF-8"
 
+session: Simple
+
 template: "template_toolkit"
 engines:
    template:

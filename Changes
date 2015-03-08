@@ -1,5 +1,10 @@
 Revision history for Dancer2-Cookbook
 
+0.04  Sun Mar 08 22:40:00 2015
+      - Added login page and basic authentication.
+      - Added register page.
+      - Added logout functionality.
+
 0.03  Sun Mar 08 04:40:00 2015
       - Updated delete book page and added AJAX call.
 

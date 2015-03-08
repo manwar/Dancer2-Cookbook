@@ -17,6 +17,7 @@
 <div align="center">
 <h1>Dancer2 Cookbook - BookStore</h1>
 <br/><hr/>
+<% IF session.username %>
 |
 <a href="/list">List</a>
 |
@@ -30,13 +31,21 @@
 |
 <a href="/delete/book">Delete Book</a>
 |
+<a href="/logout">LOGOUT</a>
+|
+<% ELSE %>
+|
+<a href="/login">Login</a>
+|
+<a href="/register">Register</a>
+|
+<% END %>
 <hr/>
 </div>
 <% content %>
 <div id="footer">
-<hr/>
 Powered by <a href="http://perldancer.org/">Dancer2</a> <% dancer_version %>
-<hr/>
 </div>
+<hr/>
 </body>
 </html>

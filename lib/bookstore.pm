@@ -3,8 +3,11 @@ package bookstore;
 use Data::Dumper;
 use Try::Tiny;
 use Dancer2;
-use Dancer2::Plugin::DBIC qw(schema resultset rset);
+use Dancer2::Plugin::DBIC qw(schema);
 use Dancer2::Plugin::Ajax;
+use Dancer2::Plugin::Auth::Tiny;
+use Dancer2::Session::Simple;
+use Dancer2::Plugin::Passphrase;
 
 =head1 NAME
 
@@ -12,7 +15,7 @@ Dancer2 Cookbook - BookStore
 
 =head1 VERSION
 
-Version 0.03
+Version 0.04
 
 =head1 DESCRIPTION
 
@@ -24,8 +27,59 @@ Mohammad S Anwar, C<< <mohammad.anwar at yahoo.com> >>
 
 =cut
 
-$bookstore::VERSION   = '0.03';
+$bookstore::VERSION   = '0.04';
 $bookstore::AUTHORITY = 'cpan:MANWAR';
+
+hook before => sub {
+    printf "logged in? %s\n", session('username') ? session('username') : '-';
+    if ( !session('username')
+         && request->dispatch_path !~ m{^/login}
+         && request->dispatch_path !~ m{^/register} ) {
+        forward '/login', { return_url => request->dispatch_path };
+    }
+};
+
+get '/register' => sub {
+    template 'register';
+};
+
+post '/register' => sub {
+    my $username = params->{username};
+    my $password = params->{password};
+    if (defined $username && defined $password) {
+        $password = passphrase($password)->generate;
+        _register_user($username, $password->rfc2307());
+
+        session username => $username;
+        my $return_url = params->{return_url} || '/';
+        print STDERR "Added user [$username] ...\n";
+        redirect '/';
+    }
+    else {
+        template 'register' => { error => "Username and password required." };
+    }
+};
+
+get '/login' => sub {
+    template 'login' => { return_url => params->{return_url} };
+};
+
+post '/login' => sub {
+    if (_is_valid_user(params->{username}, params->{password})) {
+        session username => params->{username};
+        my $return_url = params->{return_url} || '/';
+        print STDERR "Redirecting to [$return_url] ...\n";
+        redirect $return_url;
+    }
+    else {
+        template 'login' => { error => "invalid username or password" };
+    }
+};
+
+get '/logout' => sub {
+    context->destroy_session;
+    redirect '/';
+};
 
 ajax '/author/:id/books' => sub {
     my $id = params->{id};
@@ -191,6 +245,29 @@ post '/add/book' => sub {
 #
 #
 # PRIVATE METHODS
+
+sub _register_user {
+    my ($username, $password) = @_;
+
+    my $bookstore_schema = schema 'bookstore';
+    $bookstore_schema->populate(
+        'User', [ ['username', 'password'], [$username, $password] ]);
+}
+
+sub _is_valid_user {
+    my ($username, $password) = @_;
+
+    my $bookstore_schema = schema 'bookstore';
+    my $user = $bookstore_schema->resultset('User')->find({ username => $username });
+    return 0 unless defined $user;
+    my $saved_password = $user->password;
+
+    (passphrase($password)->matches($saved_password))
+        ?
+        (return 1)
+        :
+        (return 0);
+}
 
 sub _search {
     my ($query) = @_;
