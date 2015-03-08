@@ -4,6 +4,7 @@ use Data::Dumper;
 use Try::Tiny;
 use Dancer2;
 use Dancer2::Plugin::DBIC qw(schema resultset rset);
+use Dancer2::Plugin::Ajax;
 
 =head1 NAME
 
@@ -11,7 +12,7 @@ Dancer2 Cookbook - BookStore
 
 =head1 VERSION
 
-Version 0.02
+Version 0.03
 
 =head1 DESCRIPTION
 
@@ -23,8 +24,22 @@ Mohammad S Anwar, C<< <mohammad.anwar at yahoo.com> >>
 
 =cut
 
-$bookstore::VERSION   = '0.02';
+$bookstore::VERSION   = '0.03';
 $bookstore::AUTHORITY = 'cpan:MANWAR';
+
+ajax '/author/:id/books' => sub {
+    my $id = params->{id};
+
+    my $books = _get_books_by_author($id);
+    my $response = "";
+    foreach my $book (@$books) {
+        my $book_id = $book->id;
+        my $book_title = $book->title;
+        $response .= qq{<input type="checkbox" name="book" value="$book_id">$book_title<br>};
+    }
+
+    return $response;
+};
 
 get '/' => sub {
     template 'list' => { results => _list() };
@@ -114,7 +129,7 @@ post '/add/author' => sub {
 };
 
 get '/delete/book' => sub {
-    template 'delete_book' => { books => _get_books() };
+    template 'delete_book' => { authors => _get_authors() };
 };
 
 post '/delete/book' => sub {
@@ -294,6 +309,15 @@ sub _get_books {
     }
 
     return $books;
+}
+
+sub _get_books_by_author {
+    my ($author) = @_;
+
+    my $bookstore_schema = schema 'bookstore';
+    my @books = $bookstore_schema->resultset('Book')->search({ author => $author });
+
+    return \@books;
 }
 
 true;

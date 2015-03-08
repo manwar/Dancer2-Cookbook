@@ -19,9 +19,11 @@ WriteMakefile(
         'HTTP::Request::Common' => 0,
     },
     PREREQ_PM => {
-        'YAML'    => 0,
-        'Dancer2' => 0.159001,
+        'YAML'      => 0,
+        'Try::Tiny' => 0,
+        'Dancer2'   => 0.159001,
         'Dancer2::Plugin::DBIC'       => 0,
+        'Dancer2::Plugin::Ajax'       => 0,
         'DBIx::Class::Schema::Loader' => 0,
     },
 );

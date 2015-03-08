@@ -1,11 +1,31 @@
-<% IF books.size %>
-   <p><h3>Delete Book</h3><hr/>
-   <form method="POST" action="/delete/book">
-   <% FOREACH book IN books %>
-      <input type="checkbox" name="book" value="<% book.id %>"><% book.title %>[<% book.author %>]<br>
-   <% END %>
-   <input type="submit"/>
-   </form>
-<% ELSE %>
-   <b>None book found.</b>
-<% END %>
+<script type="text/javascript" src="<% request.uri_base %>/javascripts/jquery.js"></script>
+<script type="text/javascript">
+jQuery.noConflict();
+
+function get_books_by_author() {
+    var e  = document.getElementById("authorId");
+    var id = e.options[e.selectedIndex].value;
+    $.ajax({
+        url: "/author/" + id + "/books",
+        dataType: "HTML",
+        success: function(data) {
+            $("#books").html(data);
+        }
+    });
+};
+
+$(document).ready(get_books_by_author);
+
+</script>
+
+<p><h3>Delete Book</h3><hr/>
+<form method="POST" action="/delete/book">
+   Author:
+   <select id="authorId" name="author" onChange="get_books_by_author()">
+       <% FOREACH author IN authors %>
+          <option value="<% author.id %>"><% author.name %></option>
+       <% END %>
+  </select>
+  <div id="books"></div>
+  <input type="submit"/>
+</form>

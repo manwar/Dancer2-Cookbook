@@ -1,5 +1,8 @@
 Revision history for Dancer2-Cookbook
 
+0.03  Sun Mar 08 04:40:00 2015
+      - Updated delete book page and added AJAX call.
+
 0.02  Fri Mar 06 20:50:00 2015
       - Added unique constraint to the tables 'author' and 'book'.
       - Updated add author/book page to handle database error.

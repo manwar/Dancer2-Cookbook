@@ -21,3 +21,9 @@ FEATURE:
     - Add/Edit/Delete Author.
     - Add/Edit/Delete Book.
     - Search Author/Book.
+
+Example 2: Continuation from Example 1
+
+FEATURE:
+
+    - Added AJAX call to Delete Book page.
