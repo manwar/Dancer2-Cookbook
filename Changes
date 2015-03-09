@@ -1,5 +1,8 @@
 Revision history for Dancer2-Cookbook
 
+0.05  Mon Mar 09 12:47:00 2015
+      - Updated bookstore.db and add table 'user'.
+
 0.04  Sun Mar 08 22:40:00 2015
       - Added login page and basic authentication.
       - Added register page.
