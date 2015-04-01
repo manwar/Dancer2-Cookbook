@@ -1,5 +1,9 @@
 Revision history for Dancer2-Cookbook
 
+0.06  Wed Apr 01 13:05:00 2015
+      - Experimented with Dancer2::Core::Error.
+      - Added Chart using Highchart library with ajax call.
+
 0.05  Mon Mar 09 12:47:00 2015
       - Updated bookstore.db and add table 'user'.
 
