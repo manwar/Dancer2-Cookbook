@@ -31,6 +31,8 @@
 |
 <a href="/delete/book">Delete Book</a>
 |
+<a href="/chart">Chart</a>
+|
 <a href="/logout">LOGOUT</a>
 |
 <% ELSE %>
