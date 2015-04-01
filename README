@@ -6,9 +6,7 @@ Example 1: Bookstore
 INSTALL:
 
     - sudo cpanm Dancer2::Plugin::DBIC
-
     - sqlite3 bookstore.db < bookstore.sql
-
     - SCHEMA_LOADER_BACKCOMPAT=1 perl populate_database.pl
 
 RUN:
@@ -35,3 +33,10 @@ FEATURE:
     - Added login page and basic authentication.
     - Added register page.
     - Added logout functionality.
+
+Example 4: Continuation from Example 3
+
+FEATURE:
+
+    - Experimented with Dancer2::Core::Error.
+    - Added Chart using Highchart library with ajax call.

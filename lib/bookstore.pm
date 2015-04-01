@@ -1,13 +1,16 @@
 package bookstore;
 
 use Data::Dumper;
+use JSON;
 use Try::Tiny;
+
 use Dancer2;
 use Dancer2::Plugin::DBIC qw(schema);
 use Dancer2::Plugin::Ajax;
 use Dancer2::Plugin::Auth::Tiny;
 use Dancer2::Session::Simple;
 use Dancer2::Plugin::Passphrase;
+use Dancer2::Core::Error;
 
 =head1 NAME
 
@@ -15,7 +18,7 @@ Dancer2 Cookbook - BookStore
 
 =head1 VERSION
 
-Version 0.05
+Version 0.06
 
 =head1 DESCRIPTION
 
@@ -27,7 +30,7 @@ Mohammad S Anwar, C<< <mohammad.anwar at yahoo.com> >>
 
 =cut
 
-$bookstore::VERSION   = '0.05';
+$bookstore::VERSION   = '0.06';
 $bookstore::AUTHORITY = 'cpan:MANWAR';
 
 hook before => sub {
@@ -37,6 +40,23 @@ hook before => sub {
          && request->dispatch_path !~ m{^/register} ) {
         forward '/login', { return_url => request->dispatch_path };
     }
+};
+
+get '/chart' => sub {
+    template 'chart';
+};
+
+ajax '/chart/referesh' => sub {
+    my $data = [
+        ['Shanghai', 23.7],
+        ['Lagos', 16.1],
+        ['Instanbul', 14.2],
+        ['Karachi', 14.0],
+        ['Mumbai', 12.5],
+    ];
+
+    content_type 'application/json';
+    return to_json($data);
 };
 
 get '/register' => sub {
@@ -56,7 +76,16 @@ post '/register' => sub {
         redirect '/';
     }
     else {
-        template 'register' => { error => "Username and password required." };
+        #Dancer2::Core::Error->new(
+        #    response => response(),
+        #    status   => 406,
+        #    message  => 'Username and password required.',
+        #    template => 'register')->throw;
+        template 'register' => {
+            error    => "Username and password required.",
+            username => $username,
+            password => $password
+        };
     }
 };
 
@@ -72,7 +101,16 @@ post '/login' => sub {
         redirect $return_url;
     }
     else {
-        template 'login' => { error => "invalid username or password" };
+        #Dancer2::Core::Error->new(
+        #    response => response(),
+        #    status   => 406,
+        #    message  => 'Invalid Username or password.',
+        #    template => 'login')->throw;
+        template 'login' => {
+            error    => "Invalid username or password",
+            username => params->{username},
+            password => params->{password}
+        };
     }
 };
 
@@ -92,6 +130,7 @@ ajax '/author/:id/books' => sub {
         $response .= qq{<input type="checkbox" name="book" value="$book_id">$book_title<br>};
     }
 
+    content_type 'text/html';
     return $response;
 };
 
