@@ -40,3 +40,9 @@ FEATURE:
 
     - Experimented with Dancer2::Core::Error.
     - Added Chart using Highchart library with ajax call.
+
+Example 5: Continuation from Example 4
+
+FEATURE:
+
+    - Implemented CAPTCHA to the login page.

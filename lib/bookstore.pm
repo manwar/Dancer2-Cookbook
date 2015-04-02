@@ -8,9 +8,11 @@ use Dancer2;
 use Dancer2::Plugin::DBIC qw(schema);
 use Dancer2::Plugin::Ajax;
 use Dancer2::Plugin::Auth::Tiny;
-use Dancer2::Session::Simple;
 use Dancer2::Plugin::Passphrase;
+use Dancer2::Plugin::Captcha;
+
 use Dancer2::Core::Error;
+use Dancer2::Session::Simple;
 
 =head1 NAME
 
@@ -18,7 +20,7 @@ Dancer2 Cookbook - BookStore
 
 =head1 VERSION
 
-Version 0.06
+Version 0.07
 
 =head1 DESCRIPTION
 
@@ -30,16 +32,37 @@ Mohammad S Anwar, C<< <mohammad.anwar at yahoo.com> >>
 
 =cut
 
-$bookstore::VERSION   = '0.06';
+$bookstore::VERSION   = '0.07';
 $bookstore::AUTHORITY = 'cpan:MANWAR';
 
 hook before => sub {
     printf "logged in? %s\n", session('username') ? session('username') : '-';
     if ( !session('username')
          && request->dispatch_path !~ m{^/login}
-         && request->dispatch_path !~ m{^/register} ) {
+         && request->dispatch_path !~ m{^/register}
+         && request->dispatch_path !~ m{^/get_captcha}
+        ) {
         forward '/login', { return_url => request->dispatch_path };
     }
+};
+
+get '/get_captcha' => sub {
+
+    my $params = {
+         new => {
+             width   => 160,
+             height  => 75,
+             lines   => 5,
+             gd_font => 'giant',
+         },
+         create   => [ normal => 'default' ],
+         particle => [ 100 ],
+         out      => { force => 'png' },
+         random => _generate_captcha_keys(6),
+    };
+
+    return generate_captcha($params);
+    #return generate_captcha();
 };
 
 get '/chart' => sub {
@@ -94,6 +117,18 @@ get '/login' => sub {
 };
 
 post '/login' => sub {
+    my $p = request->params;
+
+    unless (is_valid_captcha(request->params->{captcha})) {
+        return template 'login' => {
+            error    => "Invalid captcha code",
+            username => params->{username},
+            password => params->{password}
+        };
+    }
+
+    remove_captcha;
+
     if (_is_valid_user(params->{username}, params->{password})) {
         session username => params->{username};
         my $return_url = params->{return_url} || '/';
@@ -284,6 +319,21 @@ post '/add/book' => sub {
 #
 #
 # PRIVATE METHODS
+
+sub _generate_captcha_keys {
+    my ($count) = @_;
+
+    my @chars = ('A'..'Z','a'..'z',0..9);
+    my $min   = 1;
+    my $max   = scalar(@chars);
+
+    my $random = '';
+    foreach (1..$count) {
+        $random .= $chars[int($min + rand($max - $min))];
+    }
+
+    return $random;
+}
 
 sub _register_user {
     my ($username, $password) = @_;

@@ -19,6 +19,16 @@ engines:
        end_tag:   '%>'
 
 plugins:
+   Captcha:
+     new:
+       width: 160
+       height: 75
+       lines: 5
+       gd_font: 'giant'
+     create: [ 'normal', 'default' ]
+     out:
+       force: 'png'
+     particle: [ 100 ]
    DBIC:
      bookstore:
-       dsn:  "dbi:SQLite:dbname=bookstore.db"
+       dsn: "dbi:SQLite:dbname=bookstore.db"

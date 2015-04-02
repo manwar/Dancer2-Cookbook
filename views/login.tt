@@ -1,13 +1,29 @@
+<script type="text/javascript" src="<% request.uri_base %>/javascripts/jquery.js"></script>
+<script type="text/javascript">
+jQuery.noConflict();
+
+$(function () {
+    $('#img1').click(function () {
+        $("#img1").attr("src", "<% request.uri_base %>/get_captcha?r="+Math.random());
+    });
+});
+
+</script>
+
 <div align="center">
 <% IF error %>
    <p><b><font color="red">ERROR:<% error %></font></b></p>
 <% END %>
 <p><h3>Login</h3><hr/>
+   <div align="center">
    <form method="POST" action="/login">
          <input type="hidden" name="return_url" value="<% return_url %>"/>
          User Name:<input type="text" name="username" value="<% username %>"/>
-         Password :<input type="password" name="password" value="<% password %>"/>
-         <input type="submit"/>
+         <br>Password :<input type="password" name="password" value="<% password %>"/>
+         <br>Captcha: <input type="text" name="captcha">
+         <br><img id="img1" src="<% request.uri_base %>/get_captcha"/>
+         <br><input type="submit"/>
    </form>
+   </div>
 </p>
 </div>
