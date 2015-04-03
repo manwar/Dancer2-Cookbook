@@ -46,3 +46,4 @@ Example 5: Continuation from Example 4
 FEATURE:
 
     - Implemented CAPTCHA to the login page.
+    - Implemented CAPTCHA to the register page.

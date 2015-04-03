@@ -1,12 +1,29 @@
-<div align="center">
-<% IF error %>
-   <p><b><font color="red">ERROR:<% error %></font></b></p>
-<% END %>
-<p><h3>Register</h3><hr/>
-   <form method="POST" action="/register">
-         User Name:<input type="text" name="username" value="<% username %>"/>
-         Password :<input type="password" name="password" value="<% password %>"/>
-         <input type="submit"/>
-   </form>
-</p>
+<link rel="stylesheet" type="text/css" href="<% request.uri_base %>/css/generic.css"/>
+<script type="text/javascript" src="<% request.uri_base %>/javascripts/jquery.js"></script>
+<script type="text/javascript">
+jQuery.noConflict();
+
+$(function () {
+    $('#img1').click(function () {
+        $("#img1").attr("src", "<% request.uri_base %>/get_captcha?r="+Math.random());
+    });
+});
+
+</script>
+<div id="container">
+    <% IF error %>
+        <p><b><font color="red">ERROR:<% error %></font></b></p>
+    <% END %>
+    <h1>Register</h1>
+    <form method="POST" action="/register">
+        <input type="hidden" name="return_url" value="<% return_url %>"/>
+        <label>User Name</label>
+        <input type="text" name="username" value="<% username %>" required pattern="^[A-Za-z0-9]+$" placeholder="User name ALPHABETS only"/>
+        <label>Password</label>
+        <input type="password" name="password" value="<% password %>" required pattern="^[a-zA-Z0-9]+$" placeholder="Password ALPHANUMERIC"/>
+        <label>Enter the Captcha</label>
+        <input type="text" name="captcha" required pattern="^[A-Za-A0-9]{6}$" style="width: 120px;">
+        <img id="img1" src="<% request.uri_base %>/get_captcha" alt="captcha" style="margin-bottom:20px;">
+        <button type="submit">Submit</button>
+    </form>
 </div>

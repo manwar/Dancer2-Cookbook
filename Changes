@@ -1,5 +1,9 @@
 Revision history for Dancer2-Cookbook
 
+0.08  Fri Apr 03 02:35:00 2015
+      - Applied CSS style to Login/Register page.
+      - Applied CAPTCHA to Register page.
+
 0.07  Thu Apr 02 18:50:00 2015
       - Implemented CAPTCHA to the login page.
 

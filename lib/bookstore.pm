@@ -20,7 +20,7 @@ Dancer2 Cookbook - BookStore
 
 =head1 VERSION
 
-Version 0.07
+Version 0.08
 
 =head1 DESCRIPTION
 
@@ -32,7 +32,7 @@ Mohammad S Anwar, C<< <mohammad.anwar at yahoo.com> >>
 
 =cut
 
-$bookstore::VERSION   = '0.07';
+$bookstore::VERSION   = '0.08';
 $bookstore::AUTHORITY = 'cpan:MANWAR';
 
 hook before => sub {

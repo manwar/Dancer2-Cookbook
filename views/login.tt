@@ -1,3 +1,4 @@
+<link rel="stylesheet" type="text/css" href="<% request.uri_base %>/css/generic.css"/>
 <script type="text/javascript" src="<% request.uri_base %>/javascripts/jquery.js"></script>
 <script type="text/javascript">
 jQuery.noConflict();
@@ -9,21 +10,20 @@ $(function () {
 });
 
 </script>
-
-<div align="center">
-<% IF error %>
-   <p><b><font color="red">ERROR:<% error %></font></b></p>
-<% END %>
-<p><h3>Login</h3><hr/>
-   <div align="center">
-   <form method="POST" action="/login">
-         <input type="hidden" name="return_url" value="<% return_url %>"/>
-         User Name:<input type="text" name="username" value="<% username %>"/>
-         <br>Password :<input type="password" name="password" value="<% password %>"/>
-         <br>Captcha: <input type="text" name="captcha">
-         <br><img id="img1" src="<% request.uri_base %>/get_captcha"/>
-         <br><input type="submit"/>
-   </form>
-   </div>
-</p>
+<div id="container">
+    <% IF error %>
+        <p><b><font color="red">ERROR:<% error %></font></b></p>
+    <% END %>
+    <h1>Login</h1>
+    <form method="POST" action="/login">
+        <input type="hidden" name="return_url" value="<% return_url %>"/>
+        <label>User Name</label>
+        <input type="text" name="username" value="<% username %>" required pattern="^[A-Za-z0-9]+$" placeholder="User name ALPHANUMERIC"/>
+        <label>Password</label>
+        <input type="password" name="password" value="<% password %>" required pattern="^[a-zA-Z0-9]+$" placeholder="Password ALPHANUMERIC"/>
+        <label>Enter the Captcha</label>
+        <input type="text" name="captcha" required pattern="^[A-Za-A0-9]{6}$" style="width: 120px;">
+        <img id="img1" src="<% request.uri_base %>/get_captcha" alt="captcha" style="margin-bottom:20px;">
+        <button type="submit">Submit</button>
+    </form>
 </div>
