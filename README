@@ -47,3 +47,9 @@ FEATURE:
 
     - Implemented CAPTCHA to the login page.
     - Implemented CAPTCHA to the register page.
+
+Example 6: Continuation from Example 5
+
+FEATURE:
+
+    - Implemented route chaining.

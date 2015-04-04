@@ -10,6 +10,7 @@ use Dancer2::Plugin::Ajax;
 use Dancer2::Plugin::Auth::Tiny;
 use Dancer2::Plugin::Passphrase;
 use Dancer2::Plugin::Captcha;
+use Dancer2::Plugin::Chain;
 
 use Dancer2::Core::Error;
 use Dancer2::Session::Simple;
@@ -20,7 +21,7 @@ Dancer2 Cookbook - BookStore
 
 =head1 VERSION
 
-Version 0.08
+Version 0.09
 
 =head1 DESCRIPTION
 
@@ -32,7 +33,7 @@ Mohammad S Anwar, C<< <mohammad.anwar at yahoo.com> >>
 
 =cut
 
-$bookstore::VERSION   = '0.08';
+$bookstore::VERSION   = '0.09';
 $bookstore::AUTHORITY = 'cpan:MANWAR';
 
 hook before => sub {
@@ -45,6 +46,23 @@ hook before => sub {
         forward '/login', { return_url => request->dispatch_path };
     }
 };
+
+my $continent       = chain '/continent/:continent' => sub { var 'site'  => param('continent'); };
+my $country         = chain '/country/:country'     => sub { var 'site'  => param('country');   };
+my $event           = chain '/event/:event'         => sub { var 'event' => param('event');     };
+my $continent_event = chain $continent, $event;
+
+get chain $country, $event, '/schedule' => sub {
+    return sprintf("schedule of %s in %s\n", var('event'), var('site'));
+};
+
+get chain $continent_event, '/schedule' => sub {
+    return sprintf("schedule of %s in %s\n", var('event'), var('site'));
+};
+
+get chain $continent, sub { var 'temp' => var('site') },
+          $country,   sub { var 'site' => join(', ', var('site'), var('temp')) },
+          $event, '/schedule' => sub { return sprintf("schedule of %s in %s\n", var('event'), var('site')); };
 
 get '/get_captcha' => sub {
 
