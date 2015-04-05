@@ -21,7 +21,7 @@ Dancer2 Cookbook - BookStore
 
 =head1 VERSION
 
-Version 0.09
+Version 0.10
 
 =head1 DESCRIPTION
 
@@ -33,7 +33,7 @@ Mohammad S Anwar, C<< <mohammad.anwar at yahoo.com> >>
 
 =cut
 
-$bookstore::VERSION   = '0.09';
+$bookstore::VERSION   = '0.10';
 $bookstore::AUTHORITY = 'cpan:MANWAR';
 
 hook before => sub {
@@ -83,21 +83,33 @@ get '/get_captcha' => sub {
     #return generate_captcha();
 };
 
-get '/chart' => sub {
-    template 'chart';
+get '/work' => sub {
+    template 'work';
 };
 
-ajax '/chart/referesh' => sub {
-    my $data = [
-        ['Shanghai', 23.7],
-        ['Lagos', 16.1],
-        ['Instanbul', 14.2],
-        ['Karachi', 14.0],
-        ['Mumbai', 12.5],
-    ];
+my $work_type = chain '/work/:type' => sub { var 'type' => param('type'); };
+get chain $work_type, '/favourites' => sub {
 
     content_type 'application/json';
-    return to_json($data);
+    my $type = var 'type';
+    my ($subtitle, $tooltip, $data);
+
+    my $title       = 'CPAN 2010 - 2015';
+    my $yaxis_label = 'Favourites';
+    my $series_name = 'Favourites';
+
+    if ($type eq 'github') {
+        $subtitle   = 'Source: <a href="https://github.com/Manwar">GitHub</a>';
+        $tooltip    = 'Favourites (GitHub): <b>{point.y:.0f}</b>';
+        $data       = _github_favourites();
+    }
+    elsif ($type eq 'metacpan') {
+        $subtitle   = 'Source: <a href="https://metacpan.org/author/MANWAR">MetaCPAN</a>';
+        $tooltip    = 'Favourites (MetaCPAN): <b>{point.y:.0f}</b>';
+        $data       = _metacpan_favourites();
+    }
+
+    return _highchart($title, $subtitle, $series_name, $tooltip, $yaxis_label, $data);
 };
 
 get '/register' => sub {
@@ -502,6 +514,160 @@ sub _get_books_by_author {
     my @books = $bookstore_schema->resultset('Book')->search({ author => $author });
 
     return \@books;
+}
+
+
+sub _highchart {
+    my ($title, $subtitle, $series_name, $tooltip, $yaxis_label, $data) = @_;
+
+    my $highchart = {
+        'chart'    => { 'type' => 'column'  },
+        'title'    => { 'text' => $title    },
+        'subtitle' => { 'text' => $subtitle },
+        'xAxis'    => {
+            'type'   => 'category',
+            'labels' => {
+                'rotation' => -90,
+                'style'    => { 'fontSize' => '9px', 'fontFamily' => 'Verdana, sans-serif' },
+            },
+        },
+        'yAxis' => {
+            'min'   => 0,
+            'title' => { 'text' => $yaxis_label },
+        },
+        'legend'  => { 'enabled'     => 'false'  },
+        'tooltip' => { 'pointFormat' => $tooltip },
+        'series'  => [{
+            'name' => $series_name,
+            'data' => $data,
+            'dataLabels' => {
+                'enabled'  => 'false',
+                'rotation' => -90,
+                'color'    => '#FFFFFF',
+                'align'    => 'right',
+                'y'        => 2,
+                'style'    => { 'fontSize' => '2px', 'fontFamily' => 'Verdana, sans-serif' },
+            },
+        }],
+    };
+
+    return to_json($highchart);
+}
+
+sub _metacpan_favourites {
+    return [
+        [ 'Address::PostCode::Australia' , 0],
+        [ 'Address::PostCode::India'     , 0],
+        [ 'Address::PostCode::UK'        , 0],
+        [ 'Address::PostCode::UserAgent' , 0],
+        [ 'BankAccount::Validator::UK'   , 1],
+        [ 'Calendar::Bahai'              , 0],
+        [ 'Calendar::Hijri'              , 0],
+        [ 'Calendar::Persian'            , 0],
+        [ 'Calendar::Saka'               , 0],
+        [ 'Compare::Directory'           , 0],
+        [ 'CPAN::Search::Author'         , 0],
+        [ 'CPAN::Search::Tester'         , 0],
+        [ 'Crypt::Affine'                , 0],
+        [ 'Crypt::Hill'                  , 0],
+        [ 'Crypt::Image'                 , 0],
+        [ 'Crypt::Trifid'                , 0],
+        [ 'Dancer2::Plugin::Captcha'     , 0],
+        [ 'Dancer2::Plugin::Chain'       , 0],
+        [ 'Data::Password::Filter'       , 0],
+        [ 'Food::ECodes'                 , 0],
+        [ 'Games::Cards::Pair'           , 0],
+        [ 'Games::Domino'                , 1],
+        [ 'Games::TicTacToe'             , 0],
+        [ 'IP::CountryFlag'              , 0],
+        [ 'IP::Info'                     , 0],
+        [ 'Lingua::IND::Numbers'         , 0],
+        [ 'LWP::UserAgent::Anonymous'    , 0],
+        [ 'Map::Tube'                    , 2],
+        [ 'Map::Tube::Barcelona'         , 0],
+        [ 'Map::Tube::CLI'               , 0],
+        [ 'Map::Tube::Delhi'             , 0],
+        [ 'Map::Tube::London'            , 1],
+        [ 'Map::Tube::NYC'               , 1],
+        [ 'Map::Tube::Plugin::Formatter' , 0],
+        [ 'Map::Tube::Plugin::Graph'     , 1],
+        [ 'Map::Tube::Tokyo'             , 0],
+        [ 'MouseX::Params::Validate'     , 0],
+        [ 'Test::CSS'                    , 0],
+        [ 'Test::Excel'                  , 1],
+        [ 'Test::Internet'               , 0],
+        [ 'Test::Map::Tube'              , 0],
+        [ 'Text::MostFreqKDistance'      , 0],
+        [ 'WebService::Wikimapia'        , 1],
+        [ 'WWW::Google::APIDiscovery'    , 1],
+        [ 'WWW::Google::CustomSearch'    , 0],
+        [ 'WWW::Google::DistanceMatrix'  , 0],
+        [ 'WWW::Google::PageSpeedOnline' , 0],
+        [ 'WWW::Google::Places'          , 0],
+        [ 'WWW::Google::URLShortener'    , 0],
+        [ 'WWW::Google::UserAgent'       , 0],
+        [ 'WWW::MovieReviews::NYT'       , 0],
+        [ 'WWW::OReillyMedia::Store'     , 0],
+        [ 'WWW::StatsMix'                , 0],
+    ];
+}
+
+sub _github_favourites {
+    return [
+        [ 'Address::PostCode::Australia', 1],
+        [ 'Address::PostCode::India'    , 0],
+        [ 'Address::PostCode::UK'       , 0],
+        [ 'Address::PostCode::UserAgent', 0],
+        [ 'BankAccount::Validator::UK'  , 0],
+        [ 'Calendar::Bahai'             , 0],
+        [ 'Calendar::Hijri'             , 1],
+        [ 'Calendar::Persian'           , 0],
+        [ 'Calendar::Saka'              , 0],
+        [ 'Compare::Directory'          , 0],
+        [ 'CPAN::Search::Author'        , 0],
+        [ 'CPAN::Search::Tester'        , 0],
+        [ 'Crypt::Affine'               , 0],
+        [ 'Crypt::Hill'                 , 0],
+        [ 'Crypt::Image'                , 2],
+        [ 'Crypt::Trifid'               , 0],
+        [ 'Dancer2::Plugin::Captcha'    , 0],
+        [ 'Dancer2::Plugin::Chain'      , 0],
+        [ 'Data::Password::Filter'      , 0],
+        [ 'Food::ECodes'                , 0],
+        [ 'Games::Cards::Pair'          , 0],
+        [ 'Games::Domino'               , 0],
+        [ 'Games::TicTacToe'            , 0],
+        [ 'IP::CountryFlag'             , 0],
+        [ 'IP::Info'                    , 0],
+        [ 'Lingua::IND::Numbers'        , 0],
+        [ 'LWP::UserAgent::Anonymous'   , 0],
+        [ 'Map::Tube'                   , 3],
+        [ 'Map::Tube::Barcelona'        , 0],
+        [ 'Map::Tube::CLI'              , 0],
+        [ 'Map::Tube::Delhi'            , 0],
+        [ 'Map::Tube::London'           , 1],
+        [ 'Map::Tube::NYC'              , 1],
+        [ 'Map::Tube::Plugin::Formatter', 0],
+        [ 'Map::Tube::Plugin::Graph'    , 0],
+        [ 'Map::Tube::Tokyo'            , 1],
+        [ 'MouseX::Params::Validate'    , 0],
+        [ 'Test::CSS'                   , 0],
+        [ 'Test::Excel'                 , 2],
+        [ 'Test::Internet'              , 0],
+        [ 'Test::Map::Tube'             , 0],
+        [ 'Text::MostFreqKDistance'     , 0],
+        [ 'WebService::Wikimapia'       , 0],
+        [ 'WWW::Google::APIDiscovery'   , 0],
+        [ 'WWW::Google::CustomSearch'   , 0],
+        [ 'WWW::Google::DistanceMatrix' , 0],
+        [ 'WWW::Google::PageSpeedOnline', 0],
+        [ 'WWW::Google::Places'         , 0],
+        [ 'WWW::Google::URLShortener'   , 0],
+        [ 'WWW::Google::UserAgent'      , 0],
+        [ 'WWW::MovieReviews::NYT'      , 0],
+        [ 'WWW::OReillyMedia::Store'    , 0],
+        [ 'WWW::StatsMix'               , 0],
+    ];
 }
 
 true;

@@ -53,3 +53,4 @@ Example 6: Continuation from Example 5
 FEATURE:
 
     - Implemented route chaining.
+    - Added link 'Work', showing charts for GitHub/MetaCPAN favourites using route chaining.

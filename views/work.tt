@@ -1,0 +1,30 @@
+<script type="text/javascript">
+
+    $(function () {
+        load_github_favourites();
+        load_metacpan_favourites();
+    });
+
+    function load_github_favourites() {
+        $.ajax({
+            url: "/work/github/favourites",
+            dataType: "JSON",
+            success: function(data) { $('#github').highcharts(data);   }
+        });
+    };
+
+    function load_metacpan_favourites() {
+        $.ajax({
+            url: "/work/metacpan/favourites",
+            dataType: "JSON",
+            success: function(data) { $('#metacpan').highcharts(data); }
+        });
+    };
+
+</script>
+
+<script src="<% request.uri_base %>/javascripts/highstock.js"></script>
+<script src="<% request.uri_base %>/javascripts/exporting.js"></script>
+
+<div id="github"   style="height:400px; margin: 0 2em; clear:both; min-width: 300px"></div>
+<div id="metacpan" style="height:400px; margin: 0 2em; clear:both; min-width: 300px"></div>
