@@ -21,7 +21,7 @@ Dancer2 Cookbook - BookStore
 
 =head1 VERSION
 
-Version 0.10
+Version 0.11
 
 =head1 DESCRIPTION
 
@@ -33,7 +33,7 @@ Mohammad S Anwar, C<< <mohammad.anwar at yahoo.com> >>
 
 =cut
 
-$bookstore::VERSION   = '0.10';
+$bookstore::VERSION   = '0.11';
 $bookstore::AUTHORITY = 'cpan:MANWAR';
 
 hook before => sub {
@@ -554,120 +554,42 @@ sub _highchart {
     return to_json($highchart);
 }
 
+sub _fetch_favourites {
+    my ($type) = @_;
+
+    my $bookstore_schema = schema 'bookstore';
+    my @modules = $bookstore_schema->resultset('CpanModule')->search();
+
+    my $favourites = [];
+    foreach my $module (@modules) {
+        my $module_id   = $module->id;
+        my $module_name = $module->package_name;
+        my $row = $bookstore_schema->resultset('CpanModuleDetail')->find({ module_id => $module_id });
+
+        if (defined $row) {
+            if ($type eq 'metacpan') {
+                push @$favourites, [ $module_name, $row->metacpan_favourite ];
+            }
+            elsif ($type eq 'github') {
+                push @$favourites, [ $module_name, $row->github_favourite ];
+            }
+        }
+        else {
+            push @$favourites, [ $module_name, 0 ];
+        }
+    }
+
+    return $favourites;
+}
+
 sub _metacpan_favourites {
-    return [
-        [ 'Address::PostCode::Australia' , 0],
-        [ 'Address::PostCode::India'     , 0],
-        [ 'Address::PostCode::UK'        , 0],
-        [ 'Address::PostCode::UserAgent' , 0],
-        [ 'BankAccount::Validator::UK'   , 1],
-        [ 'Calendar::Bahai'              , 0],
-        [ 'Calendar::Hijri'              , 0],
-        [ 'Calendar::Persian'            , 0],
-        [ 'Calendar::Saka'               , 0],
-        [ 'Compare::Directory'           , 0],
-        [ 'CPAN::Search::Author'         , 0],
-        [ 'CPAN::Search::Tester'         , 0],
-        [ 'Crypt::Affine'                , 0],
-        [ 'Crypt::Hill'                  , 0],
-        [ 'Crypt::Image'                 , 0],
-        [ 'Crypt::Trifid'                , 0],
-        [ 'Dancer2::Plugin::Captcha'     , 0],
-        [ 'Dancer2::Plugin::Chain'       , 0],
-        [ 'Data::Password::Filter'       , 0],
-        [ 'Food::ECodes'                 , 0],
-        [ 'Games::Cards::Pair'           , 0],
-        [ 'Games::Domino'                , 1],
-        [ 'Games::TicTacToe'             , 0],
-        [ 'IP::CountryFlag'              , 0],
-        [ 'IP::Info'                     , 0],
-        [ 'Lingua::IND::Numbers'         , 0],
-        [ 'LWP::UserAgent::Anonymous'    , 0],
-        [ 'Map::Tube'                    , 2],
-        [ 'Map::Tube::Barcelona'         , 0],
-        [ 'Map::Tube::CLI'               , 0],
-        [ 'Map::Tube::Delhi'             , 0],
-        [ 'Map::Tube::London'            , 1],
-        [ 'Map::Tube::NYC'               , 1],
-        [ 'Map::Tube::Plugin::Formatter' , 0],
-        [ 'Map::Tube::Plugin::Graph'     , 1],
-        [ 'Map::Tube::Tokyo'             , 0],
-        [ 'MouseX::Params::Validate'     , 0],
-        [ 'Test::CSS'                    , 0],
-        [ 'Test::Excel'                  , 1],
-        [ 'Test::Internet'               , 0],
-        [ 'Test::Map::Tube'              , 0],
-        [ 'Text::MostFreqKDistance'      , 0],
-        [ 'WebService::Wikimapia'        , 1],
-        [ 'WWW::Google::APIDiscovery'    , 1],
-        [ 'WWW::Google::CustomSearch'    , 0],
-        [ 'WWW::Google::DistanceMatrix'  , 0],
-        [ 'WWW::Google::PageSpeedOnline' , 0],
-        [ 'WWW::Google::Places'          , 0],
-        [ 'WWW::Google::URLShortener'    , 0],
-        [ 'WWW::Google::UserAgent'       , 0],
-        [ 'WWW::MovieReviews::NYT'       , 0],
-        [ 'WWW::OReillyMedia::Store'     , 0],
-        [ 'WWW::StatsMix'                , 0],
-    ];
+
+    return _fetch_favourites('metacpan');
 }
 
 sub _github_favourites {
-    return [
-        [ 'Address::PostCode::Australia', 1],
-        [ 'Address::PostCode::India'    , 0],
-        [ 'Address::PostCode::UK'       , 0],
-        [ 'Address::PostCode::UserAgent', 0],
-        [ 'BankAccount::Validator::UK'  , 0],
-        [ 'Calendar::Bahai'             , 0],
-        [ 'Calendar::Hijri'             , 1],
-        [ 'Calendar::Persian'           , 0],
-        [ 'Calendar::Saka'              , 0],
-        [ 'Compare::Directory'          , 0],
-        [ 'CPAN::Search::Author'        , 0],
-        [ 'CPAN::Search::Tester'        , 0],
-        [ 'Crypt::Affine'               , 0],
-        [ 'Crypt::Hill'                 , 0],
-        [ 'Crypt::Image'                , 2],
-        [ 'Crypt::Trifid'               , 0],
-        [ 'Dancer2::Plugin::Captcha'    , 0],
-        [ 'Dancer2::Plugin::Chain'      , 0],
-        [ 'Data::Password::Filter'      , 0],
-        [ 'Food::ECodes'                , 0],
-        [ 'Games::Cards::Pair'          , 0],
-        [ 'Games::Domino'               , 0],
-        [ 'Games::TicTacToe'            , 0],
-        [ 'IP::CountryFlag'             , 0],
-        [ 'IP::Info'                    , 0],
-        [ 'Lingua::IND::Numbers'        , 0],
-        [ 'LWP::UserAgent::Anonymous'   , 0],
-        [ 'Map::Tube'                   , 3],
-        [ 'Map::Tube::Barcelona'        , 0],
-        [ 'Map::Tube::CLI'              , 0],
-        [ 'Map::Tube::Delhi'            , 0],
-        [ 'Map::Tube::London'           , 1],
-        [ 'Map::Tube::NYC'              , 1],
-        [ 'Map::Tube::Plugin::Formatter', 0],
-        [ 'Map::Tube::Plugin::Graph'    , 0],
-        [ 'Map::Tube::Tokyo'            , 1],
-        [ 'MouseX::Params::Validate'    , 0],
-        [ 'Test::CSS'                   , 0],
-        [ 'Test::Excel'                 , 2],
-        [ 'Test::Internet'              , 0],
-        [ 'Test::Map::Tube'             , 0],
-        [ 'Text::MostFreqKDistance'     , 0],
-        [ 'WebService::Wikimapia'       , 0],
-        [ 'WWW::Google::APIDiscovery'   , 0],
-        [ 'WWW::Google::CustomSearch'   , 0],
-        [ 'WWW::Google::DistanceMatrix' , 0],
-        [ 'WWW::Google::PageSpeedOnline', 0],
-        [ 'WWW::Google::Places'         , 0],
-        [ 'WWW::Google::URLShortener'   , 0],
-        [ 'WWW::Google::UserAgent'      , 0],
-        [ 'WWW::MovieReviews::NYT'      , 0],
-        [ 'WWW::OReillyMedia::Store'    , 0],
-        [ 'WWW::StatsMix'               , 0],
-    ];
+
+    return _fetch_favourites('github');
 }
 
 true;

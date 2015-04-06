@@ -1,5 +1,8 @@
 Revision history for Dancer2-Cookbook
 
+0.11  Tue Apr 07 00:15:00 2015
+      - Made the chart database driven.
+
 0.10  Sun Apr 05 20:00:00 2015
       - Added link 'Work', showing charts for GitHub/MetaCPAN favourites using route chaining.
 
