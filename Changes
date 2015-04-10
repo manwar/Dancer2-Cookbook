@@ -1,5 +1,8 @@
 Revision history for Dancer2-Cookbook
 
+0.12  Fri Apr 10 17:50:00 2015
+      - Centralised schema handler.
+
 0.11  Tue Apr 07 00:15:00 2015
       - Made the chart database driven.
 

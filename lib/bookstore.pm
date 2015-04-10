@@ -21,7 +21,7 @@ Dancer2 Cookbook - BookStore
 
 =head1 VERSION
 
-Version 0.11
+Version 0.12
 
 =head1 DESCRIPTION
 
@@ -33,8 +33,10 @@ Mohammad S Anwar, C<< <mohammad.anwar at yahoo.com> >>
 
 =cut
 
-$bookstore::VERSION   = '0.11';
+$bookstore::VERSION   = '0.12';
 $bookstore::AUTHORITY = 'cpan:MANWAR';
+
+our $bookstore_schema = schema 'bookstore';
 
 hook before => sub {
     printf "logged in? %s\n", session('username') ? session('username') : '-';
@@ -161,6 +163,7 @@ post '/login' => sub {
 
     if (_is_valid_user(params->{username}, params->{password})) {
         session username => params->{username};
+
         my $return_url = params->{return_url} || '/';
         print STDERR "Redirecting to [$return_url] ...\n";
         redirect $return_url;
@@ -212,6 +215,7 @@ get '/search' => sub {
 };
 
 post '/search' => sub {
+
     my $query   = param('query');
     my $results = [];
     $results    = _search($query) if (length $query);
@@ -220,7 +224,7 @@ post '/search' => sub {
 };
 
 get '/delete/author' => sub {
-    my $bookstore_schema = schema 'bookstore';
+
     my $authors = [];
     my $all_authors = _get_authors();
     foreach my $author (@$all_authors) {
@@ -232,8 +236,8 @@ get '/delete/author' => sub {
 };
 
 post '/delete/author' => sub {
+
     my $authors = param('author');
-    my $bookstore_schema = schema 'bookstore';
     my $resultset = $bookstore_schema->resultset('Author')->search({ id => $authors });
     $resultset->delete_all;
 
@@ -241,8 +245,8 @@ post '/delete/author' => sub {
 };
 
 get '/edit/author/:id' => sub {
+
     my $id = params->{id};
-    my $bookstore_schema = schema 'bookstore';
     my @authors = $bookstore_schema->resultset('Author')->search({ id => $id });
 
     template 'edit_author' => {
@@ -253,11 +257,11 @@ get '/edit/author/:id' => sub {
 };
 
 post '/edit/author/:id' => sub {
+
     my $id        = params->{id};
     my $firstname = param('firstname');
     my $lastname  = param('lastname');
 
-    my $bookstore_schema = schema 'bookstore';
     my $author = $bookstore_schema->resultset('Author')->find({ id => $id });
     $author->firstname($firstname);
     $author->lastname($lastname);
@@ -271,6 +275,7 @@ get '/add/author' => sub {
 };
 
 post '/add/author' => sub {
+
     my $firstname = param('firstname');
     my $lastname  = param('lastname');
     try {
@@ -291,8 +296,8 @@ get '/delete/book' => sub {
 };
 
 post '/delete/book' => sub {
+
     my $books = param('book');
-    my $bookstore_schema = schema 'bookstore';
     my $resultset = $bookstore_schema->resultset('Book')->search({ id => $books });
     $resultset->delete_all;
 
@@ -300,9 +305,8 @@ post '/delete/book' => sub {
 };
 
 get '/edit/book/:id' => sub {
-    my $id = params->{id};
 
-    my $bookstore_schema = schema 'bookstore';
+    my $id = params->{id};
     my $book = $bookstore_schema->resultset('Book')->find({ id => $id });
 
     template 'edit_book' => {
@@ -313,10 +317,10 @@ get '/edit/book/:id' => sub {
 };
 
 post '/edit/book/:id' => sub {
+
     my $id    = params->{id};
     my $title = param('title');
 
-    my $bookstore_schema = schema 'bookstore';
     my $book = $bookstore_schema->resultset('Book')->find({ id => $id });
     $book->title($title);
     $book->update;
@@ -368,7 +372,6 @@ sub _generate_captcha_keys {
 sub _register_user {
     my ($username, $password) = @_;
 
-    my $bookstore_schema = schema 'bookstore';
     $bookstore_schema->populate(
         'User', [ ['username', 'password'], [$username, $password] ]);
 }
@@ -376,7 +379,6 @@ sub _register_user {
 sub _is_valid_user {
     my ($username, $password) = @_;
 
-    my $bookstore_schema = schema 'bookstore';
     my $user = $bookstore_schema->resultset('User')->find({ username => $username });
     return 0 unless defined $user;
     my $saved_password = $user->password;
@@ -390,8 +392,6 @@ sub _is_valid_user {
 
 sub _search {
     my ($query) = @_;
-
-    my $bookstore_schema = schema 'bookstore';
 
     my $results = {};
     my @authors = $bookstore_schema->resultset('Author')->search(
@@ -430,8 +430,6 @@ sub _search {
 
 sub _list {
 
-    my $bookstore_schema = schema 'bookstore';
-
     my $results = {};
     my @authors = $bookstore_schema->resultset('Author')->search();
     my @books   = $bookstore_schema->resultset('Book')->search();
@@ -463,7 +461,6 @@ sub _list {
 sub _add_author {
     my ($firstname, $lastname) = @_;
 
-    my $bookstore_schema = schema 'bookstore';
     $bookstore_schema->populate(
         'Author', [ ['firstname', 'lastname'], [$firstname, $lastname] ]);
 }
@@ -471,15 +468,13 @@ sub _add_author {
 sub _add_book {
     my ($author, $title) = @_;
 
-    my $bookstore_schema = schema 'bookstore';
     $bookstore_schema->populate(
         'Book', [ ['title', 'author'], [$title, $author] ]);
 }
 
 sub _get_authors {
-    my $bookstore_schema = schema 'bookstore';
-    my @rows = $bookstore_schema->resultset('Author')->search();
 
+    my @rows = $bookstore_schema->resultset('Author')->search();
     my $authors = [];
     foreach my $author (@rows) {
         push @$authors, {
@@ -492,9 +487,8 @@ sub _get_authors {
 }
 
 sub _get_books {
-    my $bookstore_schema = schema 'bookstore';
-    my @rows = $bookstore_schema->resultset('Book')->search();
 
+    my @rows = $bookstore_schema->resultset('Book')->search();
     my $books = [];
     foreach my $book (@rows) {
         push @$books, {
@@ -510,7 +504,6 @@ sub _get_books {
 sub _get_books_by_author {
     my ($author) = @_;
 
-    my $bookstore_schema = schema 'bookstore';
     my @books = $bookstore_schema->resultset('Book')->search({ author => $author });
 
     return \@books;
@@ -557,9 +550,7 @@ sub _highchart {
 sub _fetch_favourites {
     my ($type) = @_;
 
-    my $bookstore_schema = schema 'bookstore';
     my @modules = $bookstore_schema->resultset('CpanModule')->search();
-
     my $favourites = [];
     foreach my $module (@modules) {
         my $module_id   = $module->id;
