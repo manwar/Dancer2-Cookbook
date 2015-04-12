@@ -54,3 +54,4 @@ FEATURE:
 
     - Implemented route chaining.
     - Added link 'Work', showing charts for GitHub/MetaCPAN favourites using route chaining.
+    - Implemented Dancer2::Plugin::Res.
