@@ -1,5 +1,8 @@
 Revision history for Dancer2-Cookbook
 
+0.13  Sun Apr 12 15:15:00 2015
+      - Implemented Dancer2::Plugin::Res.
+
 0.12  Fri Apr 10 17:50:00 2015
       - Centralised schema handler.
 

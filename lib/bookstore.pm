@@ -6,6 +6,7 @@ use Try::Tiny;
 
 use Dancer2;
 use Dancer2::Plugin::DBIC qw(schema);
+use Dancer2::Plugin::Res;
 use Dancer2::Plugin::Ajax;
 use Dancer2::Plugin::Auth::Tiny;
 use Dancer2::Plugin::Passphrase;
@@ -21,7 +22,7 @@ Dancer2 Cookbook - BookStore
 
 =head1 VERSION
 
-Version 0.12
+Version 0.13
 
 =head1 DESCRIPTION
 
@@ -33,7 +34,7 @@ Mohammad S Anwar, C<< <mohammad.anwar at yahoo.com> >>
 
 =cut
 
-$bookstore::VERSION   = '0.12';
+$bookstore::VERSION   = '0.13';
 $bookstore::AUTHORITY = 'cpan:MANWAR';
 
 our $bookstore_schema = schema 'bookstore';
@@ -152,6 +153,7 @@ post '/login' => sub {
     my $p = request->params;
 
     unless (is_valid_captcha(request->params->{captcha})) {
+        #return res 400 => 'Invalid captcha code';
         return template 'login' => {
             error    => "Invalid captcha code",
             username => params->{username},
