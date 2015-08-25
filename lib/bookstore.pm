@@ -112,7 +112,22 @@ get chain $work_type, '/favourites' => sub {
         $data       = _metacpan_favourites();
     }
 
-    return _highchart($title, $subtitle, $series_name, $tooltip, $yaxis_label, $data);
+    return _highchart_type_1($title, $subtitle, $series_name, $tooltip, $yaxis_label, $data);
+};
+
+get '/favourites' => sub {
+    template 'favourites';
+};
+
+get '/chart/favourites' => sub {
+
+    content_type 'application/json';
+    my $title       = 'CPAN 2010 - 2015';
+    my $yaxis_label = 'Favourites';
+    my $subtitle    = 'Source: <a href="https://metacpan.org/author/MANWAR">[ MetaCPAN ] </a><a href="https://github.com/Manwar">[ GitHub ]</a>';
+
+    my ($categories, $series) = _fetch_combine_favourites();
+    return _highchart_type_2($title, $subtitle, $yaxis_label, $categories, $series);
 };
 
 get '/register' => sub {
@@ -511,8 +526,7 @@ sub _get_books_by_author {
     return \@books;
 }
 
-
-sub _highchart {
+sub _highchart_type_1 {
     my ($title, $subtitle, $series_name, $tooltip, $yaxis_label, $data) = @_;
 
     my $highchart = {
@@ -547,6 +561,62 @@ sub _highchart {
     };
 
     return to_json($highchart);
+}
+
+sub _highchart_type_2 {
+    my ($title, $subtitle, $yaxis_label, $categories, $series) = @_;
+
+    my $highchart = {
+        'chart'    => { 'type'       => 'column'    },
+        'title'    => { 'text'       => $title      },
+        'subtitle' => { 'text'       => $subtitle   },
+        'xAxis'    => { 'categories' => $categories },
+        'yAxis'    => { 'min'        => 0, 'title' => { 'text' => $yaxis_label }},
+        'tooltip'  => {
+            'headerFormat' => '<span style="font-size:10px">{point.key}</span><table>',
+            'pointFormat'  => '<tr><td style="color:{series.color};padding:0">{series.name}: </td><td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
+            'footerFormat' => '</table>',
+            'shared'       => 'true',
+            'useHTML'      => 'true',
+        },
+        'plotOptions' => {
+            'column' => {
+                'pointPadding' => 0.2,
+                'borderWidth'  => 0,
+            },
+        },
+        'series' => $series
+    };
+
+    return to_json($highchart);
+}
+
+sub _fetch_combine_favourites {
+
+    my @modules = $bookstore_schema->resultset('CpanModule')->search();
+    my $categories = [];
+    my $metacpan   = { name => 'MetaCPAN' };
+    my $github     = { name => 'GitHub'   };
+
+    foreach my $module (@modules) {
+        my $module_id   = $module->id;
+        my $module_name = $module->package_name;
+        my $row = $bookstore_schema->resultset('CpanModuleDetail')->find({ module_id => $module_id });
+
+        push @$categories, $module_name;
+        if (defined $row) {
+            push @{$metacpan->{data}}, $row->metacpan_favourite;
+            push @{$github->{data}}, $row->github_favourite;
+        }
+        else {
+            push @{$metacpan->{data}}, 0;
+            push @{$github->{data}}, 0;
+        }
+    }
+
+    my $series = [ $metacpan, $github ];
+
+    return ($categories, $series);
 }
 
 sub _fetch_favourites {

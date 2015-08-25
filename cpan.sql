@@ -43,6 +43,8 @@ INSERT INTO cpan_module(author_id, package_name) VALUES((SELECT id FROM cpan_mod
 INSERT INTO cpan_module(author_id, package_name) VALUES((SELECT id FROM cpan_module_author WHERE pause_id = 'MANWAR'), 'Address::PostCode::India');
 INSERT INTO cpan_module(author_id, package_name) VALUES((SELECT id FROM cpan_module_author WHERE pause_id = 'MANWAR'), 'Address::PostCode::UK');
 INSERT INTO cpan_module(author_id, package_name) VALUES((SELECT id FROM cpan_module_author WHERE pause_id = 'MANWAR'), 'Address::PostCode::UserAgent');
+INSERT INTO cpan_module(author_id, package_name) VALUES((SELECT id FROM cpan_module_author WHERE pause_id = 'MANWAR'), 'App::calendr');
+INSERT INTO cpan_module(author_id, package_name) VALUES((SELECT id FROM cpan_module_author WHERE pause_id = 'MANWAR'), 'Astro::Utils');
 INSERT INTO cpan_module(author_id, package_name) VALUES((SELECT id FROM cpan_module_author WHERE pause_id = 'MANWAR'), 'BankAccount::Validator::UK');
 INSERT INTO cpan_module(author_id, package_name) VALUES((SELECT id FROM cpan_module_author WHERE pause_id = 'MANWAR'), 'Calendar::Bahai');
 INSERT INTO cpan_module(author_id, package_name) VALUES((SELECT id FROM cpan_module_author WHERE pause_id = 'MANWAR'), 'Calendar::Hijri');
@@ -57,7 +59,14 @@ INSERT INTO cpan_module(author_id, package_name) VALUES((SELECT id FROM cpan_mod
 INSERT INTO cpan_module(author_id, package_name) VALUES((SELECT id FROM cpan_module_author WHERE pause_id = 'MANWAR'), 'Crypt::Trifid');
 INSERT INTO cpan_module(author_id, package_name) VALUES((SELECT id FROM cpan_module_author WHERE pause_id = 'MANWAR'), 'Dancer2::Plugin::Captcha');
 INSERT INTO cpan_module(author_id, package_name) VALUES((SELECT id FROM cpan_module_author WHERE pause_id = 'MANWAR'), 'Dancer2::Plugin::Chain');
+INSERT INTO cpan_module(author_id, package_name) VALUES((SELECT id FROM cpan_module_author WHERE pause_id = 'MANWAR'), 'Dancer2::Plugin::Res');
 INSERT INTO cpan_module(author_id, package_name) VALUES((SELECT id FROM cpan_module_author WHERE pause_id = 'MANWAR'), 'Data::Password::Filter');
+INSERT INTO cpan_module(author_id, package_name) VALUES((SELECT id FROM cpan_module_author WHERE pause_id = 'MANWAR'), 'Date::Bahai::Simple');
+INSERT INTO cpan_module(author_id, package_name) VALUES((SELECT id FROM cpan_module_author WHERE pause_id = 'MANWAR'), 'Date::Exception');
+INSERT INTO cpan_module(author_id, package_name) VALUES((SELECT id FROM cpan_module_author WHERE pause_id = 'MANWAR'), 'Date::Hijri::Simple');
+INSERT INTO cpan_module(author_id, package_name) VALUES((SELECT id FROM cpan_module_author WHERE pause_id = 'MANWAR'), 'Date::Persian::Simple');
+INSERT INTO cpan_module(author_id, package_name) VALUES((SELECT id FROM cpan_module_author WHERE pause_id = 'MANWAR'), 'Date::Saka::Simple');
+INSERT INTO cpan_module(author_id, package_name) VALUES((SELECT id FROM cpan_module_author WHERE pause_id = 'MANWAR'), 'Date::Utils');
 INSERT INTO cpan_module(author_id, package_name) VALUES((SELECT id FROM cpan_module_author WHERE pause_id = 'MANWAR'), 'Food::ECodes');
 INSERT INTO cpan_module(author_id, package_name) VALUES((SELECT id FROM cpan_module_author WHERE pause_id = 'MANWAR'), 'Games::Cards::Pair');
 INSERT INTO cpan_module(author_id, package_name) VALUES((SELECT id FROM cpan_module_author WHERE pause_id = 'MANWAR'), 'Games::Domino');
@@ -76,6 +85,8 @@ INSERT INTO cpan_module(author_id, package_name) VALUES((SELECT id FROM cpan_mod
 INSERT INTO cpan_module(author_id, package_name) VALUES((SELECT id FROM cpan_module_author WHERE pause_id = 'MANWAR'), 'Map::Tube::Plugin::Graph');
 INSERT INTO cpan_module(author_id, package_name) VALUES((SELECT id FROM cpan_module_author WHERE pause_id = 'MANWAR'), 'Map::Tube::Tokyo');
 INSERT INTO cpan_module(author_id, package_name) VALUES((SELECT id FROM cpan_module_author WHERE pause_id = 'MANWAR'), 'MouseX::Params::Validate');
+INSERT INTO cpan_module(author_id, package_name) VALUES((SELECT id FROM cpan_module_author WHERE pause_id = 'MANWAR'), 'Task::Calendar');
+INSERT INTO cpan_module(author_id, package_name) VALUES((SELECT id FROM cpan_module_author WHERE pause_id = 'MANWAR'), 'Term::Screen::Lite');
 INSERT INTO cpan_module(author_id, package_name) VALUES((SELECT id FROM cpan_module_author WHERE pause_id = 'MANWAR'), 'Test::CSS');
 INSERT INTO cpan_module(author_id, package_name) VALUES((SELECT id FROM cpan_module_author WHERE pause_id = 'MANWAR'), 'Test::Excel');
 INSERT INTO cpan_module(author_id, package_name) VALUES((SELECT id FROM cpan_module_author WHERE pause_id = 'MANWAR'), 'Test::Internet');
@@ -96,6 +107,7 @@ INSERT INTO cpan_module(author_id, package_name) VALUES((SELECT id FROM cpan_mod
 INSERT INTO cpan_module_detail(module_id, github_favourite) VALUES ((SELECT id FROM cpan_module WHERE package_name = 'Address::PostCode::Australia'), 1);
 INSERT INTO cpan_module_detail(module_id, github_favourite) VALUES ((SELECT id FROM cpan_module WHERE package_name = 'Calendar::Hijri'), 1);
 INSERT INTO cpan_module_detail(module_id, github_favourite) VALUES ((SELECT id FROM cpan_module WHERE package_name = 'Crypt::Image'), 2);
+INSERT INTO cpan_module_detail(module_id, metacpan_favourite) VALUES ((SELECT id FROM cpan_module WHERE package_name = 'Date::Hijri::Simple'), 1);
 INSERT INTO cpan_module_detail(module_id, github_favourite, metacpan_favourite) VALUES ((SELECT id FROM cpan_module WHERE package_name = 'Map::Tube'), 3, 2);
 INSERT INTO cpan_module_detail(module_id, github_favourite, metacpan_favourite) VALUES ((SELECT id FROM cpan_module WHERE package_name = 'Map::Tube::London'), 1, 1);
 INSERT INTO cpan_module_detail(module_id, github_favourite, metacpan_favourite) VALUES ((SELECT id FROM cpan_module WHERE package_name = 'Map::Tube::NYC'), 1, 1);

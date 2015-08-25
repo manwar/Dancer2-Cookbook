@@ -1,0 +1,20 @@
+<script type="text/javascript">
+
+    $(function () {
+        load_favourites();
+    });
+
+    function load_favourites() {
+        $.ajax({
+            url: "/chart/favourites",
+            dataType: "JSON",
+            success: function(data) { $('#favourites').highcharts(data); }
+        });
+    };
+
+</script>
+
+<script src="<% request.uri_base %>/javascripts/highstock.js"></script>
+<script src="<% request.uri_base %>/javascripts/exporting.js"></script>
+
+<div id="favourites" style="height:400px; margin: 0 2em; clear:both; min-width: 300px"></div>

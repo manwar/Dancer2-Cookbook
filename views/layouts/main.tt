@@ -33,6 +33,8 @@
 |
 <a href="/work">Work</a>
 |
+<a href="/favourites">Favourites</a>
+|
 <a href="/logout">LOGOUT</a>
 |
 <% ELSE %>

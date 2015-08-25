@@ -7,6 +7,7 @@ INSTALL:
 
     - sudo cpanm Dancer2::Plugin::DBIC
     - sqlite3 bookstore.db < bookstore.sql
+    - sqlite3 bookstore.db < cpan.sql (Only if required)
     - SCHEMA_LOADER_BACKCOMPAT=1 perl populate_database.pl
 
 RUN:
