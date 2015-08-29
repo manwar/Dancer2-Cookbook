@@ -1,0 +1,70 @@
+<script type="text/javascript">
+
+    var categories = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+    var chart_data = {
+        "title": null,
+     "subtitle": null,
+       "series": null,
+        "chart": { "type": "bar" },
+        "xAxis": [ { title:{ text: "Rank" },"categories": categories, "reversed": false, "labels": { "step": 1 }},{ "categories": categories, "reversed": false, "labels":{ "step": 1 }, "opposite": true, "linkedTo": 0 }],
+        "yAxis": { "title": { "text": null }, "labels": { "formatter": function () { return Math.abs(this.value); } } },
+  "plotOptions": { "series": { "stacking": "normal" } },
+      "tooltip": { "formatter" : function () { return '<a href="https://metacpan.org/author/' + this.series.options.meta[this.key-1] + '">' + this.series.options.meta[this.key-1] + '</a><b> (' + Highcharts.numberFormat(Math.abs(this.point.y), 0) + ')</b>'; } }
+    };
+
+    $(function () {
+        load_cpan_monthly_stats();
+        load_cpan_weekly_stats();
+        load_cpan_daily_stats();
+    });
+
+    function load_cpan_monthly_stats() {
+        $.ajax({
+            url: "/stats/monthly",
+            dataType: "JSON",
+            success: function(data) {
+                var monthly_chart_data      = chart_data;
+                monthly_chart_data.title    = data.title;
+                monthly_chart_data.subtitle = data.subtitle;
+                monthly_chart_data.series   = data.series;
+                $('#monthly').highcharts(monthly_chart_data);
+            }
+        });
+    }
+
+    function load_cpan_weekly_stats() {
+        $.ajax({
+            url: "/stats/weekly",
+            dataType: "JSON",
+            success: function(data) {
+                var weekly_chart_data      = chart_data;
+                weekly_chart_data.title    = data.title;
+                weekly_chart_data.subtitle = data.subtitle;
+                weekly_chart_data.series   = data.series;
+                $('#weekly').highcharts(weekly_chart_data);
+            }
+        });
+    };
+
+    function load_cpan_daily_stats() {
+        $.ajax({
+            url: "/stats/daily",
+            dataType: "JSON",
+            success: function(data) {
+                var daily_chart_data      = chart_data;
+                daily_chart_data.title    = data.title;
+                daily_chart_data.subtitle = data.subtitle;
+                daily_chart_data.series   = data.series;
+                $('#daily').highcharts(daily_chart_data);
+            }
+        });
+    };
+
+</script>
+
+<script src="<% request.uri_base %>/javascripts/highstock.js"></script>
+<script src="<% request.uri_base %>/javascripts/exporting.js"></script>
+
+<div id="monthly" style="height:300px; margin: 0 2em; clear:both; min-width: 300px"></div><br>
+<div id="weekly"  style="height:300px; margin: 0 2em; clear:both; min-width: 300px"></div><br>
+<div id="daily"   style="height:300px; margin: 0 2em; clear:both; min-width: 300px"></div><br>

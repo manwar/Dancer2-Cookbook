@@ -1,0 +1,56 @@
+{
+   "subtitle" : {
+      "text" : "Last updated at 2015-08-29 01:01:07"
+   },
+   "title" : {
+      "text" : "CPAN Daily Release (Top 10)"
+   },
+   "series" : [
+      {
+         "name" : "Current Chain",
+         "data" : [
+            -305,
+            -5,
+            -4,
+            -3,
+            -3,
+            -3
+         ],
+         "meta" : [
+            "MANWAR",
+            "MELEZHIK",
+            "CPANIC",
+            "JONASBN",
+            "INFRACANI",
+            "DBOOK"
+         ]
+      },
+      {
+         "name" : "Longest Chain",
+         "data" : [
+            370,
+            305,
+            145,
+            111,
+            102,
+            101,
+            77,
+            55,
+            47,
+            44
+         ],
+         "meta" : [
+            "BARBIE",
+            "MANWAR",
+            "SKIM",
+            "NEILB",
+            "IVANWILLS",
+            "KENTNL",
+            "ETHER",
+            "CSSON",
+            "INGY",
+            "RENEEB"
+         ]
+      }
+   ]
+}

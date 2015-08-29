@@ -35,6 +35,8 @@
 |
 <a href="/favourites">Favourites</a>
 |
+<a href="/stats">CPAN Stats</a>
+|
 <a href="/logout">LOGOUT</a>
 |
 <% ELSE %>

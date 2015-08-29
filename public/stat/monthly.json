@@ -1,0 +1,64 @@
+{
+   "subtitle" : {
+      "text" : "Last updated at 2015-08-29 01:01:07"
+   },
+   "title" : {
+      "text" : "CPAN Monthly Release (Top 10)"
+   },
+   "series" : [
+      {
+         "name" : "Current Chain",
+         "data" : [
+            -176,
+            -141,
+            -114,
+            -110,
+            -84,
+            -79,
+            -71,
+            -50,
+            -47,
+            -46
+         ],
+         "meta" : [
+            "DROLSKY",
+            "RJBS",
+            "BINGOS",
+            "PEVANS",
+            "DAGOLDEN",
+            "TOKUHIROM",
+            "LEONT",
+            "SRI",
+            "CJM",
+            "FREW"
+         ]
+      },
+      {
+         "name" : "Longest Chain",
+         "data" : [
+            176,
+            141,
+            114,
+            110,
+            108,
+            87,
+            84,
+            79,
+            71,
+            66
+         ],
+         "meta" : [
+            "DROLSKY",
+            "RJBS",
+            "BINGOS",
+            "PEVANS",
+            "ADAMK",
+            "KRYDE",
+            "DAGOLDEN",
+            "TOKUHIROM",
+            "LEONT",
+            "JKEGL"
+         ]
+      }
+   ]
+}

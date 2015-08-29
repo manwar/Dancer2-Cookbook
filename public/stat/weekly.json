@@ -1,0 +1,64 @@
+{
+   "subtitle" : {
+      "text" : "Last updated at 2015-08-29 01:01:07"
+   },
+   "title" : {
+      "text" : "CPAN Weekly Release (Top 10)"
+   },
+   "series" : [
+      {
+         "name" : "Current Chain",
+         "data" : [
+            -184,
+            -182,
+            -115,
+            -57,
+            -53,
+            -51,
+            -45,
+            -33,
+            -30,
+            -20
+         ],
+         "meta" : [
+            "FREW",
+            "ETHER",
+            "RJBS",
+            "CJM",
+            "PERLANCAR",
+            "MANWAR",
+            "IVANWILLS",
+            "LEONT",
+            "MGV",
+            "PLICEASE"
+         ]
+      },
+      {
+         "name" : "Longest Chain",
+         "data" : [
+            184,
+            182,
+            165,
+            133,
+            132,
+            129,
+            125,
+            122,
+            93,
+            80
+         ],
+         "meta" : [
+            "FREW",
+            "ETHER",
+            "BARBIE",
+            "TOBYINK",
+            "CJM",
+            "BOOK",
+            "BINGOS",
+            "RJBS",
+            "KENTNL",
+            "TOKUHIROM"
+         ]
+      }
+   ]
+}

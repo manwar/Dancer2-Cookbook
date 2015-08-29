@@ -5,6 +5,7 @@ use JSON;
 use Try::Tiny;
 
 use Dancer2;
+use Dancer2::FileUtils qw(path read_file_content);
 use Dancer2::Plugin::DBIC qw(schema);
 use Dancer2::Plugin::Res;
 use Dancer2::Plugin::Ajax;
@@ -113,6 +114,40 @@ get chain $work_type, '/favourites' => sub {
     }
 
     return _highchart_type_1($title, $subtitle, $series_name, $tooltip, $yaxis_label, $data);
+};
+
+get '/stats' => sub {
+    template 'cpan_stats';
+};
+
+get '/stats/monthly' => sub {
+
+    my $file = Dancer2::FileUtils::path(setting('appdir'), 'public', 'stat', 'monthly.json');
+    my $data = Dancer2::FileUtils::read_file_content($file);
+    my $stat = JSON->new->decode($data);
+
+    content_type 'application/json';
+    return to_json($stat);
+};
+
+get '/stats/weekly' => sub {
+
+    my $file = Dancer2::FileUtils::path(setting('appdir'), 'public', 'stat', 'weekly.json');
+    my $data = Dancer2::FileUtils::read_file_content($file);
+    my $stat = JSON->new->decode($data);
+
+    content_type 'application/json';
+    return to_json($stat);
+};
+
+get '/stats/daily' => sub {
+
+    my $file = Dancer2::FileUtils::path(setting('appdir'), 'public', 'stat', 'daily.json');
+    my $data = Dancer2::FileUtils::read_file_content($file);
+    my $stat = JSON->new->decode($data);
+
+   content_type 'application/json';
+   return to_json($stat);
 };
 
 get '/favourites' => sub {
