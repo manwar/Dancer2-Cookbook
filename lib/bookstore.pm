@@ -6,7 +6,7 @@ use Try::Tiny;
 
 use Dancer2;
 use Dancer2::FileUtils qw(path read_file_content);
-use Dancer2::Plugin::DBIC qw(schema);
+use Dancer2::Plugin::DBIC;
 use Dancer2::Plugin::Res;
 use Dancer2::Plugin::Ajax;
 use Dancer2::Plugin::Auth::Tiny;
