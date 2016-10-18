@@ -22,7 +22,7 @@ $(function () {
         <label>Password</label>
         <input type="password" name="password" value="<% password %>" required pattern="^[a-zA-Z0-9]+$" placeholder="Password ALPHANUMERIC"/>
         <label>Enter the Captcha</label>
-        <input type="text" name="captcha" required pattern="^[A-Za-A0-9]{6}$" style="width: 120px;">
+        <input type="text" name="captcha" required pattern="^[A-Za-z0-9]{6}$" style="width: 120px;">
         <img id="img1" src="<% request.uri_base %>/get_captcha" alt="captcha" style="margin-bottom:20px;">
         <button type="submit">Submit</button>
     </form>
