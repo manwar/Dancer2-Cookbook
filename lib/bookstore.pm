@@ -13,6 +13,7 @@ use Dancer2::Plugin::Auth::Tiny;
 use Dancer2::Plugin::Passphrase;
 use Dancer2::Plugin::Captcha;
 use Dancer2::Plugin::Chain;
+use Dancer2::Plugin::Paginator;
 
 use Dancer2::Core::Error;
 use Dancer2::Session::Simple;
@@ -255,11 +256,25 @@ ajax '/author/:id/books' => sub {
 };
 
 get '/' => sub {
-    template 'list' => { results => _list() };
+    template 'authors' => { results => _authors() };
 };
 
-get '/list' => sub {
-    template 'list' => { results => _list() };
+get '/authors' => sub {
+    template 'authors' => { results => _authors() };
+};
+
+get '/books' => sub {
+    my $books = _books();
+    my $curr  = 1;
+
+    template 'books' => _paginator($books, $curr);
+};
+
+get '/books/:page' => sub {
+    my $books = _books();
+    my $curr  = params->{page} || 1;
+
+    template 'books' => _paginator($books, $curr);
 };
 
 get '/search' => sub {
@@ -293,7 +308,7 @@ post '/delete/author' => sub {
     my $resultset = $bookstore_schema->resultset('Author')->search({ id => $authors });
     $resultset->delete_all;
 
-    template 'list' => { results => _list() };
+    template 'authors' => { results => _authors() };
 };
 
 get '/edit/author/:id' => sub {
@@ -319,7 +334,7 @@ post '/edit/author/:id' => sub {
     $author->lastname($lastname);
     $author->update;
 
-    template 'list' => { results => _list() };
+    template 'authors' => { results => _authors() };
 };
 
 get '/add/author' => sub {
@@ -332,7 +347,7 @@ post '/add/author' => sub {
     my $lastname  = param('lastname');
     try {
         _add_author($firstname, $lastname);
-        template 'list' => { results => _list() };
+        template 'authors' => { results => _authors() };
     }
     catch {
         template 'add_author' => {
@@ -353,7 +368,7 @@ post '/delete/book' => sub {
     my $resultset = $bookstore_schema->resultset('Book')->search({ id => $books });
     $resultset->delete_all;
 
-    template 'list' => { results => _list() };
+    template 'books' => { results => _books() };
 };
 
 get '/edit/book/:id' => sub {
@@ -377,7 +392,7 @@ post '/edit/book/:id' => sub {
     $book->title($title);
     $book->update;
 
-    template 'list' => { results => _list() };
+    template 'books' => { results => _books() };
 };
 
 get '/add/book' => sub {
@@ -390,7 +405,7 @@ post '/add/book' => sub {
 
     try {
         _add_book($author, $title);
-        template 'list' => { results => _list() };
+        template 'books' => { results => _books() };
     }
     catch {
         template 'add_book' => {
@@ -409,7 +424,7 @@ post '/add/book' => sub {
 sub _generate_captcha_keys {
     my ($count) = @_;
 
-    my @chars = ('A'..'Z','a'..'z',0..9);
+    my @chars = ('A'..'K','M','N','P'..'Z','a'..'k','m','n','p'..'z',1..9);
     my $min   = 1;
     my $max   = scalar(@chars);
 
@@ -480,7 +495,7 @@ sub _search {
     return $output;
 }
 
-sub _list {
+sub _authors {
 
     my $results = {};
     my @authors = $bookstore_schema->resultset('Author')->search();
@@ -508,6 +523,41 @@ sub _list {
     }
 
     return $output;
+}
+
+sub _books {
+
+    my @books = $bookstore_schema->resultset('Book')->search();
+    my $books = [];
+    foreach my $book (@books) {
+        push @$books, { id => $book->id, name => $book->title };
+    }
+
+    return $books;
+}
+
+sub _paginator {
+    my ($books, $curr) = @_;
+
+    my $items = scalar(@$books);
+    my $paginator = paginator(
+        curr     => $curr,
+        items    => $items,
+        base_url => '/books',
+        mode     => 'path'
+    );
+
+    my $page_size = $paginator->page_size;
+    my $i = ($curr - 1) * $page_size;
+    my $j = ($i + $page_size) - 1;
+    my $results = [ @$books[$i..$j] ];
+
+    return {
+        results   => $results,
+        paginator => $paginator,
+        prev_l    => $paginator->prev,
+        next_l    => $paginator->next,
+    };
 }
 
 sub _add_author {

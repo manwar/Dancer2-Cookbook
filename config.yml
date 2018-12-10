@@ -19,6 +19,9 @@ engines:
        end_tag:   '%>'
 
 plugins:
+   Paginator:
+     frame_size: 1
+     page_size: 3
    Captcha:
      new:
        width: 160

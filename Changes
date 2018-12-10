@@ -1,5 +1,11 @@
 Revision history for Dancer2-Cookbook
 
+0.14  Mon Dec 10 03:15:00 2018
+      - Implemented Dancer2::Plugin::Paginator.
+      - Renamed link "List" to "Authors".
+      - Added new link "Books" with paginator.
+      - Removed similar looking characters from "Captcha".
+
 0.13  Sun Apr 12 15:15:00 2015
       - Implemented Dancer2::Plugin::Res.
 

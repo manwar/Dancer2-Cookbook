@@ -1,0 +1,15 @@
+<% IF results.size %>
+   <ul>
+   <% FOREACH book IN results %>
+       <% IF book.name %>
+       <li><b><% book.name %></b> &nbsp; <a href="/edit/book/<% book.id %>">Edit</a></li>
+       <% END %>
+   <% END %>
+   </ul>
+   <br/>
+   <hr/>
+   <a href="/books/<% prev_l %>">[prev]</a>...<a href="/books/<% next_l %>">[next]</a>
+   <hr/>
+<% ELSE %>
+   <ul><li><b>No book found.</b></li></ul>
+<% END %>

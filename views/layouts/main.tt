@@ -20,13 +20,15 @@
 <br/><hr/>
 <% IF session.username %>
 |
-<a href="/list">List</a>
+<a href="/authors">Authors</a>
 |
 <a href="/search">Search</a>
 |
 <a href="/add/author">Add Author</a>
 |
 <a href="/delete/author">Delete Author</a>
+|
+<a href="/books">Books</a>
 |
 <a href="/add/book">Add Book</a>
 |
