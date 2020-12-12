@@ -29,6 +29,7 @@ WriteMakefile(
         'Dancer2::Plugin::Captcha'    => 0,
         'Dancer2::Plugin::Auth::Tiny' => 0,
         'Dancer2::Plugin::Passphrase' => 0,
+        'Dancer2::Plugin::Paginator'  => 0,
         'Dancer2::Plugin::Chain'      => 0,
         'Dancer2::Plugin::Res'        => 0,
         'Dancer2::Plugin::Ajax'       => 0,
