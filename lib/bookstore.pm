@@ -44,11 +44,11 @@ our $bookstore_schema = schema 'bookstore';
 hook before => sub {
     printf "logged in? %s\n", session('username') ? session('username') : '-';
     if ( !session('username')
-         && request->dispatch_path !~ m{^/login}
-         && request->dispatch_path !~ m{^/register}
-         && request->dispatch_path !~ m{^/get_captcha}
+         && request->path !~ m{^/login}
+         && request->path !~ m{^/register}
+         && request->path !~ m{^/get_captcha}
         ) {
-        forward '/login', { return_url => request->dispatch_path };
+        forward '/login', { return_url => request->path };
     }
 };
 
